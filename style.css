@@ -169,9 +169,9 @@ a {
     background:
         linear-gradient(
             90deg,
-            rgba(10, 12, 30, 0.82) 0%,
-            rgba(10, 12, 30, 0.58) 45%,
-            rgba(10, 12, 30, 0.22) 100%
+            rgba(10, 12, 30, 0.778) 0%,
+            rgba(10, 12, 30, 0.466) 45%,
+            rgba(10, 12, 30, 0.208) 100%
         );
 
     z-index: 1;
@@ -185,7 +185,7 @@ a {
     width: 100%;
     max-width: 760px;
 
-    margin-left: 8%;
+    margin-left: 50px;
 
     padding: 40px 20px;
 
