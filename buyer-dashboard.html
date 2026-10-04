@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Buyer Dashboard - Vyapar Sangam</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="buyer-dashboard.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="logo-box">
+            <img src="logoCreator_imagetologo (1).png"
+                 alt="Vyapar Sangam Logo">
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="listings.html">Listings</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+
+    </header>
+
+
+    <!-- ================= BUYER DASHBOARD ================= -->
+
+    <main class="buyer-dashboard">
+
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="dashboard-sidebar">
+
+            <div class="buyer-info">
+
+                <div class="buyer-avatar">
+                    PM
+                </div>
+
+                <div>
+                    <h3>Buyer Account</h3>
+                    <p>Entrepreneur</p>
+                </div>
+
+            </div>
+
+
+            <nav class="dashboard-menu">
+
+                <a href="#dashboard" class="active">
+                    Dashboard
+                </a>
+
+                <a href="#browse-businesses">
+                    Browse Businesses
+                </a>
+
+                <a href="#my-requests">
+                    My Requests
+                </a>
+
+                <a href="#nda-access">
+                    NDA & Access
+                </a>
+
+                <a href="#profile">
+                    Profile
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <section class="dashboard-content">
+
+
+            <!-- ================= DASHBOARD ================= -->
+
+            <section id="dashboard" class="dashboard-section">
+
+                <div class="page-heading">
+
+                    <div>
+                        <h1>Buyer Dashboard</h1>
+
+                        <p>
+                            Find and acquire the right business for you.
+                        </p>
+                    </div>
+
+                    <a href="#browse-businesses" class="primary-btn">
+                        Browse Businesses
+                    </a>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="stats">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🏪
+                        </div>
+
+                        <div>
+                            <p>Businesses Viewed</p>
+                            <h2>12</h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            📩
+                        </div>
+
+                        <div>
+                            <p>Requests Sent</p>
+                            <h2>4</h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            ⏳
+                        </div>
+
+                        <div>
+                            <p>Pending Requests</p>
+                            <h2>2</h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <p>Approved</p>
+                            <h2>2</h2>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= BROWSE BUSINESSES ================= -->
+
+            <section id="browse-businesses" class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>Browse Businesses</h2>
+
+                        <p>
+                            Explore businesses available for succession.
+                        </p>
+                    </div>
+
+                    <a href="listings.html" class="outline-btn">
+                        View All
+                    </a>
+
+                </div>
+
+
+                <div class="buyer-businesses">
+
+
+                    <!-- BUSINESS CARD -->
+
+                    <article class="buyer-business-card">
+
+                        <img
+                            src="https://static.vecteezy.com/system/resources/thumbnails/071/460/259/small/indian-sweet-shop-family-choosing-delicious-sweets-free-photo.jpg"
+                            alt="Ram Sweets"
+                        >
+
+                        <div class="business-card-body">
+
+                            <span class="category">
+                                Food
+                            </span>
+
+                            <h3>
+                                Ram Sweets
+                            </h3>
+
+                            <p class="location">
+                                📍 Varanasi
+                            </p>
+
+                            <p class="description">
+                                Established sweet shop with
+                                loyal customers and regular sales.
+                            </p>
+
+                            <div class="business-bottom">
+
+                                <strong>
+                                    ₹50,00,000
+                                </strong>
+
+                                <a
+                                    href="business-detail.html"
+                                    class="view-btn"
+                                >
+                                    View Details
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- BUSINESS CARD -->
+
+                    <article class="buyer-business-card">
+
+                        <img
+                            src="https://media.timeout.com/images/103462929/1372/1029/image.jpg"
+                            alt="Sharma Hardware"
+                        >
+
+                        <div class="business-card-body">
+
+                            <span class="category">
+                                Retail
+                            </span>
+
+                            <h3>
+                                Sharma Hardware
+                            </h3>
+
+                            <p class="location">
+                                📍 Lucknow
+                            </p>
+
+                            <p class="description">
+                                Established hardware business
+                                with an existing customer base.
+                            </p>
+
+                            <div class="business-bottom">
+
+                                <strong>
+                                    ₹30,00,000
+                                </strong>
+
+                                <a
+                                    href="business-detail.html"
+                                    class="view-btn"
+                                >
+                                    View Details
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= MY REQUESTS ================= -->
+
+            <section id="my-requests" class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>My Requests</h2>
+
+                        <p>
+                            Track your business information requests.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="request-table-wrapper">
+
+                    <table class="request-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Business</th>
+                                <th>Location</th>
+                                <th>Requested On</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <strong>Ram Sweets</strong>
+                                </td>
+
+                                <td>
+                                    Varanasi
+                                </td>
+
+                                <td>
+                                    02 Oct 2026
+                                </td>
+
+                                <td>
+                                    <span class="status approved">
+                                        Approved
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="#nda-access"
+                                       class="small-btn">
+                                        Continue
+                                    </a>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>Sharma Hardware</strong>
+                                </td>
+
+                                <td>
+                                    Lucknow
+                                </td>
+
+                                <td>
+                                    03 Oct 2026
+                                </td>
+
+                                <td>
+                                    <span class="status pending">
+                                        Pending
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button class="small-btn disabled-btn">
+                                        Waiting
+                                    </button>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>Gupta Printing Press</strong>
+                                </td>
+
+                                <td>
+                                    Indore
+                                </td>
+
+                                <td>
+                                    28 Sep 2026
+                                </td>
+
+                                <td>
+                                    <span class="status rejected">
+                                        Rejected
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button class="small-btn disabled-btn">
+                                        Closed
+                                    </button>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= NDA & ACCESS ================= -->
+
+            <section id="nda-access" class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>NDA & Confidential Access</h2>
+
+                        <p>
+                            Complete the confidentiality process
+                            before accessing sensitive business information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="nda-card">
+
+                    <div class="nda-icon">
+                        🔒
+                    </div>
+
+                    <div class="nda-content">
+
+                        <h3>
+                            Ram Sweets
+                        </h3>
+
+                        <p>
+                            Your request has been approved by the seller.
+                            Please review and accept the NDA to continue.
+                        </p>
+
+                        <span class="nda-status">
+                            NDA Pending
+                        </span>
+
+                    </div>
+
+                    <a href="#"
+                       class="primary-btn">
+                        Review NDA
+                    </a>
+
+                </div>
+
+
+                <div class="security-note">
+
+                    <strong>
+                        🔐 Confidential Information
+                    </strong>
+
+                    <p>
+                        Business documents, financial details and
+                        other sensitive information will only be
+                        available after seller approval and NDA acceptance.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= PROFILE ================= -->
+
+            <section id="profile" class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>My Profile</h2>
+
+                        <p>
+                            Manage your buyer information.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form class="profile-form"
+                      action="#"
+                      method="POST">
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="buyer-name">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="buyer-name"
+                                name="full_name"
+                                value="Payal Mawar"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="buyer-email">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="buyer-email"
+                                name="email"
+                                value="buyer@example.com"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="buyer-phone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="buyer-phone"
+                                name="phone"
+                                value="+91 00000 00000"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="buyer-city">
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="buyer-city"
+                                name="city"
+                                value="Indore"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="interests">
+                            Business Interests
+                        </label>
+
+                        <select
+                            id="interests"
+                            name="business_interest"
+                        >
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="food">
+                                Food
+                            </option>
+
+                            <option value="retail">
+                                Retail
+                            </option>
+
+                            <option value="printing">
+                                Printing
+                            </option>
+
+                            <option value="manufacturing">
+                                Manufacturing
+                            </option>
+
+                            <option value="services">
+                                Services
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </form>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-left">
+
+            <div class="logo-box">
+
+                <img
+                    src="logoCreator_imagetologo (1).png"
+                    alt="Vyapar Sangam Logo"
+                >
+
+            </div>
+
+            <p>
+                Building a bridge between generations
+                <br>
+                for established businesses.
+            </p>
+
+        </div>
+
+
+        <div class="footer-right">
+
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+            <a href="#">Privacy Policy</a>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Seller Dashboard - Vyapar Sangam</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="seller-dashboard.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+
+    <header class="navbar">
+
+        <div class="logo-box">
+            <img src="logoCreator_imagetologo (1).png"
+                 alt="Vyapar Sangam Logo">
+        </div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="listings.html">Listings</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+
+        <div class="nav-buttons">
+            <a href="index.html" class="logout-btn">Logout</a>
+        </div>
+
+    </header>
+
+
+    <!-- ================= SELLER DASHBOARD ================= -->
+
+    <main class="seller-dashboard">
+
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="dashboard-sidebar">
+
+            <div class="seller-info">
+
+                <div class="seller-avatar">
+                    PM
+                </div>
+
+                <div>
+                    <h3>Seller Account</h3>
+                    <p>Business Owner</p>
+                </div>
+
+            </div>
+
+
+            <nav class="dashboard-menu">
+
+                <a href="#dashboard" class="active">
+                    Dashboard
+                </a>
+
+                <a href="#add-business">
+                    Add Business
+                </a>
+
+                <a href="#my-businesses">
+                    My Businesses
+                </a>
+
+                <a href="#buyer-requests">
+                    Buyer Requests
+                </a>
+
+                <a href="#profile">
+                    Profile
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <section class="dashboard-content">
+
+
+            <!-- ================= DASHBOARD ================= -->
+
+            <section id="dashboard" class="dashboard-section">
+
+                <div class="page-heading">
+
+                    <div>
+                        <h1>Seller Dashboard</h1>
+
+                        <p>
+                            Manage your businesses and buyer requests.
+                        </p>
+                    </div>
+
+                    <a href="#add-business" class="primary-btn">
+                        + Add Business
+                    </a>
+
+                </div>
+
+
+                <!-- STATS -->
+
+                <div class="stats">
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🏪</div>
+
+                        <div>
+                            <p>Total Businesses</p>
+                            <h2>2</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+
+                        <div>
+                            <p>Buyer Requests</p>
+                            <h2>5</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+
+                        <div>
+                            <p>Pending Requests</p>
+                            <h2>2</h2>
+                        </div>
+                    </div>
+
+
+                    <div class="stat-card">
+                        <div class="stat-icon">✓</div>
+
+                        <div>
+                            <p>Approved Requests</p>
+                            <h2>3</h2>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ADD BUSINESS ================= -->
+
+            <section id="add-business" class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>Add Business</h2>
+
+                        <p>
+                            Add your established business to Vyapar Sangam.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <form class="business-form" action="#" method="POST">
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="business-name">
+                                Business Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="business-name"
+                                name="business_name"
+                                placeholder="Enter business name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="category">
+                                Category
+                            </label>
+
+                            <select
+                                id="category"
+                                name="category"
+                                required
+                            >
+
+                                <option value="">
+                                    Select category
+                                </option>
+
+                                <option value="food">
+                                    Food
+                                </option>
+
+                                <option value="retail">
+                                    Retail
+                                </option>
+
+                                <option value="printing">
+                                    Printing
+                                </option>
+
+                                <option value="manufacturing">
+                                    Manufacturing
+                                </option>
+
+                                <option value="services">
+                                    Services
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="city">
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="city"
+                                name="city"
+                                placeholder="Enter city"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="established">
+                                Established Year
+                            </label>
+
+                            <input
+                                type="number"
+                                id="established"
+                                name="established_year"
+                                placeholder="e.g. 2008"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="asking-price">
+                                Asking Price
+                            </label>
+
+                            <input
+                                type="number"
+                                id="asking-price"
+                                name="asking_price"
+                                placeholder="Enter asking price"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="revenue">
+                                Annual Revenue
+                            </label>
+
+                            <input
+                                type="number"
+                                id="revenue"
+                                name="annual_revenue"
+                                placeholder="Enter annual revenue"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="employees">
+                                Number of Employees
+                            </label>
+
+                            <input
+                                type="number"
+                                id="employees"
+                                name="employees"
+                                placeholder="Enter number"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="reason">
+                                Reason for Sale
+                            </label>
+
+                            <select
+                                id="reason"
+                                name="reason_for_sale"
+                            >
+
+                                <option value="">
+                                    Select reason
+                                </option>
+
+                                <option value="retirement">
+                                    Retirement
+                                </option>
+
+                                <option value="relocation">
+                                    Relocation
+                                </option>
+
+                                <option value="other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="description">
+                            Business Description
+                        </label>
+
+                        <textarea
+                            id="description"
+                            name="description"
+                            rows="5"
+                            placeholder="Describe your business..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="assets">
+                            Business Assets
+                        </label>
+
+                        <textarea
+                            id="assets"
+                            name="assets"
+                            rows="4"
+                            placeholder="Example: Shop premises, equipment, inventory, customer base..."
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="business-image">
+                            Business Image
+                        </label>
+
+                        <input
+                            type="file"
+                            id="business-image"
+                            name="business_image"
+                            accept="image/*"
+                        >
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Submit Business
+                    </button>
+
+                </form>
+
+            </section>
+
+
+            <!-- ================= MY BUSINESSES ================= -->
+
+            <section id="my-businesses" class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>My Businesses</h2>
+
+                        <p>
+                            View and manage your listed businesses.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="business-table-wrapper">
+
+                    <table class="business-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Business</th>
+                                <th>Category</th>
+                                <th>Location</th>
+                                <th>Asking Price</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <strong>Ram Sweets</strong>
+                                </td>
+
+                                <td>Food</td>
+
+                                <td>Varanasi</td>
+
+                                <td>₹50,00,000</td>
+
+                                <td>
+                                    <span class="status active">
+                                        Active
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button class="small-btn">
+                                        Edit
+                                    </button>
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>Sharma Hardware</strong>
+                                </td>
+
+                                <td>Retail</td>
+
+                                <td>Lucknow</td>
+
+                                <td>₹30,00,000</td>
+
+                                <td>
+                                    <span class="status pending">
+                                        Pending
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <button class="small-btn">
+                                        Edit
+                                    </button>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= BUYER REQUESTS ================= -->
+
+            <section id="buyer-requests" class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>Buyer Requests</h2>
+
+                        <p>
+                            Review requests from interested buyers.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="requests">
+
+
+                    <div class="request-card">
+
+                        <div class="buyer-details">
+
+                            <div class="buyer-avatar">
+                                RS
+                            </div>
+
+                            <div>
+
+                                <h3>Rahul Sharma</h3>
+
+                                <p>
+                                    Interested in:
+                                    <strong>Ram Sweets</strong>
+                                </p>
+
+                                <span>
+                                    Requested 2 days ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="request-actions">
+
+                            <button class="approve-btn">
+                                Approve
+                            </button>
+
+                            <button class="reject-btn">
+                                Reject
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="request-card">
+
+                        <div class="buyer-details">
+
+                            <div class="buyer-avatar">
+                                AV
+                            </div>
+
+                            <div>
+
+                                <h3>Ankit Verma</h3>
+
+                                <p>
+                                    Interested in:
+                                    <strong>Sharma Hardware</strong>
+                                </p>
+
+                                <span>
+                                    Requested 4 days ago
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="request-actions">
+
+                            <button class="approve-btn">
+                                Approve
+                            </button>
+
+                            <button class="reject-btn">
+                                Reject
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= PROFILE ================= -->
+
+            <section id="profile" class="dashboard-section">
+
+                <div class="section-heading">
+
+                    <div>
+                        <h2>My Profile</h2>
+
+                        <p>
+                            Manage your seller information.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <form class="profile-form" action="#" method="POST">
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="seller-name">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="seller-name"
+                                name="full_name"
+                                value="Payal Mawar"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="seller-email">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="seller-email"
+                                name="email"
+                                value="seller@example.com"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="seller-phone">
+                                Phone Number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="seller-phone"
+                                name="phone"
+                                value="+91 00000 00000"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="seller-city">
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="seller-city"
+                                name="city"
+                                value="Indore"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="verification-box">
+
+                        <div>
+
+                            <h3>Seller Verification</h3>
+
+                            <p>
+                                Your identity and business information
+                                can be verified through the platform.
+                            </p>
+
+                        </div>
+
+                        <span class="verification-status">
+                            Not Verified
+                        </span>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-btn"
+                    >
+                        Save Changes
+                    </button>
+
+                </form>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="footer-left">
+
+            <div class="logo-box">
+
+                <img
+                    src="logoCreator_imagetologo (1).png"
+                    alt="Vyapar Sangam Logo"
+                >
+
+            </div>
+
+            <p>
+                Building a bridge between generations
+                <br>
+                for established businesses.
+            </p>
+
+        </div>
+
+
+        <div class="footer-right">
+
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+            <a href="#">Privacy Policy</a>
+
+        </div>
+
+    </footer>
+
+</body>
+
+</html>
