@@ -1,0 +1,536 @@
+  
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+    color: #172033;
+    background-color: #ffffff;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    height: 64px;
+    padding: 0 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: #063b6f;
+    color: white;
+}
+
+ .logo {
+    width: 85px;
+    height: 85px;
+    object-fit: contain;
+}
+
+.logo-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+.navbar nav {
+    display: flex;
+    gap: 28px;
+}
+
+
+.navbar nav a {
+    color: white;
+    font-size: 13px;
+}
+
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+
+.login-link {
+    color: white;
+    font-size: 13px;
+}
+
+
+.register-btn {
+    background-color: #1684f5;
+    color: white;
+
+    padding: 9px 18px;
+
+    border-radius: 4px;
+
+    font-size: 13px;
+}
+
+
+/* ================= HERO ================= */
+
+.hero {
+    position: relative;
+
+    min-height: 390px;
+
+    background-image: url("https://assets.entrepreneur.com/content/3x2/2000/1645541249-shutterstock-638962237.jpg");
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    align-items: center;
+
+    padding: 50px;
+}
+
+
+.hero-overlay {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 20, 40, 0.58);
+}
+
+
+.hero-content {
+    position: relative;
+
+    z-index: 1;
+
+    max-width: 650px;
+
+    color: white;
+}
+
+
+.hero h1 {
+    font-size: 43px;
+    line-height: 1.12;
+
+    margin-bottom: 18px;
+}
+
+
+.hero p {
+    font-size: 16px;
+    line-height: 1.6;
+
+    margin-bottom: 25px;
+}
+
+
+/* ================= SEARCH ================= */
+
+.search-box {
+    width: 500px;
+
+    display: flex;
+
+    margin-bottom: 15px;
+}
+
+
+.search-box input {
+    flex: 1;
+
+    padding: 14px 16px;
+
+    border: none;
+
+    outline: none;
+
+    font-size: 14px;
+}
+
+
+.search-button {
+    width: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #1684f5;
+
+    color: white;
+
+    font-size: 17px;
+}
+
+
+.explore-btn {
+    display: inline-flex;
+
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 22px;
+
+    background-color: #1684f5;
+
+    color: white;
+
+    border-radius: 4px;
+
+    font-size: 14px;
+}
+
+
+/* ================= FEATURED ================= */
+
+.featured {
+    padding: 30px 45px 35px;
+}
+
+
+.section-heading {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+
+.section-heading h2 {
+    font-size: 21px;
+}
+
+
+.section-heading a {
+    color: #1684f5;
+
+    font-size: 13px;
+}
+
+
+.business-cards {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 16px;
+}
+
+
+.business-card {
+    background-color: white;
+
+    border: 1px solid #dce3eb;
+
+    border-radius: 7px;
+
+    overflow: hidden;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+
+.business-card img {
+    width: 100%;
+
+    height: 125px;
+
+    object-fit: cover;
+}
+
+
+.card-body {
+    padding: 12px;
+}
+
+
+.card-body h3 {
+    font-size: 15px;
+
+    margin-bottom: 6px;
+}
+
+
+.location {
+    font-size: 12px;
+
+    color: #667085;
+
+    margin-bottom: 8px;
+}
+
+
+.card-body h4 {
+    font-size: 15px;
+
+    margin-bottom: 8px;
+}
+
+
+.category {
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    border-radius: 10px;
+
+    font-size: 10px;
+
+    margin-bottom: 10px;
+}
+
+
+.food {
+    background-color: #d9f5df;
+    color: #16803a;
+}
+
+
+.retail {
+    background-color: #d9f5df;
+    color: #16803a;
+}
+
+
+.printing {
+    background-color: #eee0ff;
+    color: #7a35b5;
+}
+
+
+.manufacturing {
+    background-color: #d9f5df;
+    color: #16803a;
+}
+
+
+.view-btn {
+    display: block;
+
+    text-align: center;
+
+    border: 1px solid #1684f5;
+
+    color: #1684f5;
+
+    padding: 7px;
+
+    border-radius: 4px;
+
+    font-size: 11px;
+}
+
+
+/* ================= HOW IT WORKS ================= */
+
+.how-it-works {
+    padding: 25px 45px 30px;
+
+    background-color: #f5f9fc;
+
+    text-align: center;
+}
+
+
+.how-it-works h2 {
+    font-size: 20px;
+
+    margin-bottom: 20px;
+}
+
+
+.steps {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    max-width: 900px;
+
+    margin: auto;
+}
+
+
+.step {
+    padding: 10px;
+}
+
+
+.step-icon {
+    width: 38px;
+    height: 38px;
+
+    margin: 0 auto 8px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background-color: #1684f5;
+
+    color: white;
+
+    font-size: 16px;
+}
+
+
+.step h3 {
+    font-size: 13px;
+
+    margin-bottom: 5px;
+}
+
+
+.step p {
+    color: #667085;
+
+    font-size: 11px;
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer {
+    background-color: #063b6f;
+
+    color: white;
+
+    padding: 22px 45px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.footer-left p {
+    margin-top: 7px;
+
+    color: #d6e3ef;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+}
+
+
+.footer-right {
+    display: flex;
+
+    gap: 20px;
+}
+
+
+.footer-right a {
+    color: white;
+
+    font-size: 11px;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .navbar {
+        padding: 0 20px;
+    }
+
+    .navbar nav {
+        gap: 12px;
+    }
+
+    .business-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .steps {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .navbar {
+        height: auto;
+
+        padding: 15px 20px;
+
+        flex-direction: column;
+
+        gap: 15px;
+    }
+
+
+    .navbar nav {
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+
+    .hero {
+        padding: 35px 20px;
+    }
+
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+
+    .search-box {
+        width: 100%;
+    }
+
+
+    .featured {
+        padding: 25px 20px;
+    }
+
+
+    .business-cards {
+        grid-template-columns: 1fr;
+    }
+
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+
+    .footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+    }
+
+}
