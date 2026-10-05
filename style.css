@@ -32,7 +32,7 @@ a {
     align-items: center;
     justify-content: space-between;
 
-    background-color: #17134a;
+    background-color: #07172efb;
     color: white;
 
     position: relative;
@@ -40,16 +40,16 @@ a {
 }
 
 .logo-box {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
 
     display: flex;
     align-items: center;
 }
 
 .logo-box img {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
 
     object-fit: contain;
 }
@@ -169,9 +169,9 @@ a {
     background:
         linear-gradient(
             90deg,
-            rgba(10, 12, 30, 0.778) 0%,
-            rgba(10, 12, 30, 0.466) 45%,
-            rgba(10, 12, 30, 0.208) 100%
+            rgba(10, 12, 30, 0.778) 20%,
+            rgba(10, 12, 30, 0.466) 50%,
+            rgba(10, 12, 30, 0.208) 90%
         );
 
     z-index: 1;
@@ -227,7 +227,7 @@ a {
     width: 560px;
     max-width: 100%;
 
-    height: 58px;
+    height: 38px;
 
     display: flex;
 
@@ -297,22 +297,22 @@ a {
     align-items: center;
     gap: 12px;
 
-    padding: 13px 22px;
+    padding: 10px 22px;
 
     background-color: white;
 
-    color: #17134a;
+    color: #6157f5;
 
     border-radius: 6px;
 
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 800;
 
     transition: all 0.2s ease;
 }
 
 .explore-btn span {
-    font-size: 18px;
+    font-size: 15px;
     line-height: 1;
 }
 
@@ -343,8 +343,9 @@ a {
 }
 
 .section-heading h2 {
-    color: #17134a;
-
+    color: #073678fb;
+    font-weight: 600;
+    font-style:Times New Roman;
     font-size: 28px;
 
     letter-spacing: -0.5px;
@@ -522,8 +523,8 @@ a {
 }
 
 .how-it-works h2 {
-    color: #17134a;
-
+    color: #073678fb;
+    font-weight: 600;
     font-size: 28px;
 
     margin-bottom: 40px;
@@ -606,11 +607,11 @@ a {
 /* ================= FOOTER ================= */
 
 .footer {
-    background-color: #17134a;
+    background-color: #07172efb;
 
     color: white;
 
-    padding: 38px 55px;
+    padding: 18px 55px;
 
     display: flex;
 
@@ -624,17 +625,17 @@ a {
 
     align-items: center;
 
-    gap: 18px;
+    gap: 25px;
 }
 
 .footer-left .logo-box {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
 }
 
 .footer-left .logo-box img {
-    width: 80px;
-    height: 80px;
+    width: 110px;
+    height: 110px;
 }
 
 .footer-left p {
