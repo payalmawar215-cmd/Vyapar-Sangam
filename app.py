@@ -4,9 +4,8 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
-CORS(app) # stops the CORS error when frontend aur backend alag ports par run ho rahe hain
+CORS(app)
 
-# Database Connection Helper
 def get_db_connection():
     conn = psycopg2.connect(
         host="localhost",
@@ -16,19 +15,17 @@ def get_db_connection():
     )
     return conn
 
-# 1. Base Route (Check karne ke liye ki server chal raha hai)
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({"message": "Vyapar Sangam Backend is Running!"})
+    return jsonify({"message": "Vyapar Sangam Acquisition Backend is Running!"})
 
-# 2. Get All Businesses (Payal iska use karke frontend par dukaano ki list dikhayegi)
+# 1. API: Saari bikne wali dukaanein dikhane ke liye (Buyer ke liye)
 @app.route('/businesses', methods=['GET'])
 def get_businesses():
     try:
         conn = get_db_connection()
-        # RealDictCursor data ko directly JSON format me convert kar deta hai
-        cur = conn.cursor(cursor_factory=RealDictCursor) 
-        cur.execute("SELECT * FROM Businesses WHERE status = 'Funding Open';")
+        cur = conn.cursor(cursor_factory=RealDictCursor)
+        cur.execute("SELECT * FROM Businesses WHERE status = 'For Sale';")
         businesses = cur.fetchall()
         cur.close()
         conn.close()
@@ -36,28 +33,49 @@ def get_businesses():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# 3. Save New Investment (Jab user form bharkar submit karega)
-@app.route('/invest', methods=['POST'])
-def invest():
+# 2. API: Nayi dukaan bechne ke liye list karna (Seller ke liye)
+@app.route('/add-business', methods=['POST'])
+def add_business():
     try:
         data = request.json
         conn = get_db_connection()
         cur = conn.cursor()
         
-        # Trades table me data insert karna
         cur.execute(
-            "INSERT INTO Trades (investor_id, business_id, invested_amount) VALUES (%s, %s, %s)",
-            (data['investor_id'], data['business_id'], data['amount'])
+            """INSERT INTO Businesses 
+            (owner_id, shop_name, category, city, description, asking_price) 
+            VALUES (%s, %s, %s, %s, %s, %s)""",
+            (data['owner_id'], data['shop_name'], data['category'], data['city'], data['description'], data['asking_price'])
         )
         
         conn.commit()
         cur.close()
         conn.close()
         
-        return jsonify({"status": "success", "message": "Investment Successfully Saved!"}), 201
+        return jsonify({"status": "success", "message": "Business successfully listed for sale!"}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# 3. API: Dukaan kharidne ka offer save karna (Buyer ke liye)
+@app.route('/buy-business', methods=['POST'])
+def buy_business():
+    try:
+        data = request.json
+        conn = get_db_connection()
+        cur = conn.cursor()
+        
+        cur.execute(
+            "INSERT INTO Acquisitions (buyer_id, business_id, offer_amount) VALUES (%s, %s, %s)",
+            (data['buyer_id'], data['business_id'], data['offer_amount'])
+        )
+        
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return jsonify({"status": "success", "message": "Business purchase offer submitted successfully!"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-
     app.run(debug=True, port=5000)
