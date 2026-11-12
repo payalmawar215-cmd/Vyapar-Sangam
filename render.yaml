@@ -1,4 +1,4 @@
-services:
+﻿services:
   # ============================================================================
   # Vyapar Sangam Backend Web Service (Django + Gunicorn + WhiteNoise)
   # ============================================================================
@@ -11,7 +11,7 @@ services:
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
       python manage.py migrate
-    startCommand: gunicorn vyapar_sangam.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120
+    startCommand: gunicorn vyapar_sangam.wsgi:application --bind 0.0.0.0:$PORT --workers 1 --timeout 120
     healthCheckPath: /api/categories/
     envVars:
       - key: PYTHON_VERSION
@@ -21,9 +21,7 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL
-        fromDatabase:
-          name: vyapar-sangam-db
-          property: connectionString
+        sync: false
       - key: ALLOWED_HOSTS
         value: .onrender.com,localhost,127.0.0.1
       - key: CORS_ALLOWED_ORIGINS
@@ -52,11 +50,4 @@ services:
       - key: VITE_API_BASE_URL
         value: https://vyapar-sangam-backend.onrender.com/api
 
-# ==============================================================================
-# Render Managed PostgreSQL Database
-# ==============================================================================
-databases:
-  - name: vyapar-sangam-db
-    databaseName: vyapar_db
-    user: vyapar_user
-    plan: free
+
