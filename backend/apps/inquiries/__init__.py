@@ -1,0 +1,1 @@
+# Inquiries application package

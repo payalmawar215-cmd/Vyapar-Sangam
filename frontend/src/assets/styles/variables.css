@@ -1,0 +1,24 @@
+/* Shared Typography & Transition Design Tokens */
+:root {
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* Pill & Card Radii */
+  --radius-pill: 9999px;
+  --radius: 16px;
+  --radius-modal: 20px;
+  --radius-card: 16px;
+  --radius-sm: 8px;
+
+  /* Typography Scale */
+  --tracking-editorial: -0.02em;
+  --tracking-label: 0.15em;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+
+  /* Accents */
+  --accent-peach: #facca3;
+  --accent-peach-light: #FFCBA4;
+}

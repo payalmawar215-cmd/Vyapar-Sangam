@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    /* Base44 Warm Ivory / Paper HSL Design Tokens (raw channels for Tailwind hsl(var(--...))) */
+    --background: 30 20% 97%;
+    --foreground: 0 0% 10%;
+    --card: 30 20% 97%;
+    --card-foreground: 0 0% 10%;
+    --popover: 30 20% 97%;
+    --popover-foreground: 0 0% 10%;
+    --primary: 0 0% 10%;
+    --primary-foreground: 30 20% 97%;
+    --secondary: 30 10% 90%;
+    --secondary-foreground: 0 0% 10%;
+    --muted: 30 10% 90%;
+    --muted-foreground: 30 5% 35%;
+    --accent: 35 65% 36%;
+    --accent-foreground: 30 20% 97%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 30 12% 88%;
+    --input: 30 12% 88%;
+    --ring: 35 65% 36%;
+    --chart-1: 35 65% 36%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 16px;
+    --radius-modal: 20px;
+    --radius-card: 16px;
+    --radius-sm: 8px;
+    --sidebar-background: 30 20% 97%;
+    --sidebar-foreground: 0 0% 10%;
+    --sidebar-primary: 0 0% 10%;
+    --sidebar-primary-foreground: 30 20% 97%;
+    --sidebar-accent: 30 10% 90%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 30 12% 88%;
+    --sidebar-ring: 35 65% 36%;
+
+    /* Extra tokens used across components and buttons */
+    --accent-peach: #facca3;
+    --accent-peach-light: #FFCBA4;
+    --tracking-editorial: -0.02em;
+    --tracking-label: 0.15em;
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+  }
+
+  .dark {
+    --background: 0 0% 6%;
+    --foreground: 30 20% 92%;
+    --card: 0 0% 8%;
+    --card-foreground: 30 20% 92%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 30 20% 92%;
+    --primary: 30 20% 92%;
+    --primary-foreground: 0 0% 6%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 30 20% 92%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 30 10% 55%;
+    --accent: 28 22% 56%;
+    --accent-foreground: 0 0% 6%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 16%;
+    --input: 0 0% 16%;
+    --ring: 28 22% 56%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 30 20% 92%;
+    --sidebar-primary: 30 20% 92%;
+    --sidebar-primary-foreground: 0 0% 6%;
+    --sidebar-accent: 0 0% 14%;
+    --sidebar-accent-foreground: 30 20% 92%;
+    --sidebar-border: 0 0% 16%;
+    --sidebar-ring: 28 22% 56%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+  h3 {
+    @apply text-lg;
+  }
+}
+
+/* Custom scrollbar for editorial feel */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(30, 20%, 97%);
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(30, 12%, 82%);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(28, 22%, 46%);
+}
+
+/* Hairline rules */
+.hairline {
+  height: 0.5px;
+  background: hsl(var(--border));
+}
+
+/* Global Modal Styles */
+.modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-sm overflow-y-auto;
+}
+
+.modal-container {
+  @apply bg-background border border-border shadow-2xl relative my-auto overflow-hidden flex flex-col;
+  border-radius: var(--radius-modal, 20px);
+  width: min(100%, 560px);
+  max-width: calc(100vw - 32px);
+  max-height: 85vh;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.modal-body {
+  @apply overflow-y-auto px-6 py-5;
+}
+
+/* Ghost button — black stroke/text for bright backgrounds */
+.ghost-btn {
+  @apply border border-black bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-black inline-flex items-center justify-center;
+}
+.ghost-btn:hover {
+  @apply bg-black text-white;
+}
+
+/* Ghost button — white stroke/text for dark/image backgrounds */
+.ghost-btn-light {
+  @apply border border-white bg-transparent px-8 py-3 text-sm font-body tracking-widest uppercase transition-all duration-500 rounded-full text-white inline-flex items-center justify-center;
+}
+.ghost-btn-light:hover {
+  @apply bg-white text-black;
+}
+
+/* Editorial smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
