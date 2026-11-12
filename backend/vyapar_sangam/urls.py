@@ -6,6 +6,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from apps.listings.views import CategoryListView, CategoryDetailView
+from apps.core.views import SecureMediaView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -20,6 +21,7 @@ urlpatterns = [
     path('api/favorites/', include('apps.favorites.urls')),
     path('api/notifications/', include('apps.notifications.urls')),
     path('api/', include('apps.core.urls')),
+    path('media/<path:file_path>', SecureMediaView.as_view(), name='secure-media'),
 ]
 
 if settings.DEBUG:

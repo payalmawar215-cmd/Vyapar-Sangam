@@ -7,6 +7,8 @@ Generated for Vyapar Sangam - Business Succession & Acquisition Marketplace.
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -15,11 +17,24 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
-SECRET_KEY = os.getenv('SECRET_KEY', 'vyapar-sangam-dev-secret-key-change-in-production')
+_DEV_SECRET = 'vyapar-sangam-dev-secret-key-change-in-production'
+DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+SECRET_KEY = os.getenv('SECRET_KEY', _DEV_SECRET)
+if not DEBUG and (not SECRET_KEY or SECRET_KEY == _DEV_SECRET):
+    raise ImproperlyConfigured("SECRET_KEY must be configured with a secure value in production (DEBUG=False).")
 
-ALLOWED_HOSTS = ['*'] if DEBUG else os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Allowed Hosts
+allowed_hosts_env = os.getenv('ALLOWED_HOSTS', '')
+if allowed_hosts_env:
+    ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_env.split(',') if h.strip()]
+elif DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
+
+if 'testserver' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('testserver')
 
 # Application definition
 INSTALLED_APPS = [
@@ -48,18 +63,22 @@ INSTALLED_APPS = [
     'apps.meetings',
 ]
 
-# Email Configuration (independent SMTP)
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = os.getenv('EMAIL_HOST', 'localhost')
+# Email Configuration (independent SMTP / console in development)
+EMAIL_BACKEND = os.getenv(
+    'EMAIL_BACKEND',
+    'django.core.mail.backends.console.EmailBackend' if DEBUG else 'django.core.mail.backends.smtp.EmailBackend'
+)
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@vyaparsangam.com')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Vyapar Sangam <noreply@vyaparsangam.com>')
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # CORS headers for React frontend
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Efficient production static file serving
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -90,23 +109,34 @@ WSGI_APPLICATION = 'vyapar_sangam.wsgi.application'
 ASGI_APPLICATION = 'vyapar_sangam.asgi.application'
 
 # Database Configuration (PostgreSQL)
-# Reads credentials from .env, with safe fallback for initial local development
-DB_NAME = os.getenv('DB_NAME', 'vyapar_sangam_db')
-DB_USER = os.getenv('DB_USER', 'vyapar_user')
-DB_PASSWORD = os.getenv('DB_PASSWORD', 'vyapar_password')
-DB_HOST = os.getenv('DB_HOST', 'localhost')
-DB_PORT = os.getenv('DB_PORT', '5432')
+# Supports standard Render DATABASE_URL with seamless local fallback
+DATABASE_URL = os.getenv('DATABASE_URL')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    DB_NAME = os.getenv('DB_NAME', 'vyapar_sangam_db')
+    DB_USER = os.getenv('DB_USER', 'vyapar_user')
+    DB_PASSWORD = os.getenv('DB_PASSWORD', 'vyapar_password')
+    DB_HOST = os.getenv('DB_HOST', 'localhost')
+    DB_PORT = os.getenv('DB_PORT', '5432')
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': DB_NAME,
+            'USER': DB_USER,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+        }
+    }
 
 # Custom User Model
 AUTH_USER_MODEL = 'accounts.User'
@@ -133,6 +163,16 @@ STATICFILES_DIRS = [BASE_DIR / 'static'] if (BASE_DIR / 'static').exists() else 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# WhiteNoise storage configuration for compressed and hashed static files
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Django REST Framework Settings
@@ -150,8 +190,41 @@ REST_FRAMEWORK = {
 }
 
 # CORS Configuration for React Frontend (Vite)
-CORS_ALLOWED_ORIGINS = os.getenv(
-    'CORS_ALLOWED_ORIGINS',
-    'http://localhost:5173,http://127.0.0.1:5173'
-).split(',')
+cors_env = os.getenv('CORS_ALLOWED_ORIGINS', '')
+if cors_env:
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in cors_env.split(',') if o.strip()]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        'http://localhost:3000',
+        'https://vyapar-sangam.onrender.com',
+    ]
 CORS_ALLOW_CREDENTIALS = True
+
+# CSRF Trusted Origins
+csrf_env = os.getenv('CSRF_TRUSTED_ORIGINS', '')
+if csrf_env:
+    CSRF_TRUSTED_ORIGINS = [o.strip() for o in csrf_env.split(',') if o.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        'http://localhost:5173',
+        'http://127.0.0.1:5173',
+        'http://localhost:3000',
+        'https://*.onrender.com',
+    ]
+
+# SSL, Reverse Proxy and Security Headers
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True').lower() in ('true', '1')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = 'DENY'
+    SECURE_HSTS_SECONDS = int(os.getenv('SECURE_HSTS_SECONDS', 31536000))
+    # Subdomain and preload enforcement must not be forced without verifying all subdomains support HTTPS
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = os.getenv('SECURE_HSTS_INCLUDE_SUBDOMAINS', 'False').lower() in ('true', '1')
+    SECURE_HSTS_PRELOAD = os.getenv('SECURE_HSTS_PRELOAD', 'False').lower() in ('true', '1')

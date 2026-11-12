@@ -61,11 +61,16 @@ export const authService = {
 
   /**
    * Confirm password reset with token
+   * Accepts { token, resetToken, password, new_password, newPassword }
    */
-  resetPassword: async ({ token, resetToken, password, newPassword }) => {
+  resetPassword: async ({ token, resetToken, password, new_password, newPassword }) => {
+    const pwd = password || new_password || newPassword;
+    const tok = token || resetToken;
     const response = await api.post('/auth/password-reset-confirm/', {
-      token: token || resetToken,
-      password: password || newPassword,
+      token: tok,
+      password: pwd,
+      new_password: pwd,
+      newPassword: pwd,
     });
     return response.data;
   },

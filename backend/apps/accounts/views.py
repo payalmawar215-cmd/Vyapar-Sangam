@@ -97,17 +97,44 @@ class CurrentUserProfileView(APIView):
         if 'phone' in data and 'phone_number' not in data:
             data['phone_number'] = data.pop('phone')
         if 'app_role' in data and 'role' not in data:
-            data['role'] = data.pop('app_role')
+            app_role_val = data.pop('app_role')
+            if isinstance(app_role_val, list):
+                app_role_val = app_role_val[0] if app_role_val else ''
+            data['role'] = app_role_val
 
+        # Explicitly allowed self-service profile fields
         allowed_fields = ['first_name', 'last_name', 'email', 'phone_number', 'company_name', 'city', 'bio', 'role']
         clean_data = {k: v for k, v in data.items() if k in allowed_fields}
 
-        # Role change validation
+        # Role change validation & privilege escalation prevention
         if 'role' in clean_data:
-            role_val = str(clean_data['role']).upper()
+            role_raw = clean_data['role']
+            if isinstance(role_raw, list):
+                role_raw = role_raw[0] if role_raw else ''
+            role_val = str(role_raw).strip().strip("'\"[]").upper()
+            is_admin = (user.role == 'ADMIN' or user.is_staff or user.is_superuser)
+
+            # Security: Normal users must never be able to assign themselves ADMIN
+            if role_val in ('ADMIN', 'STAFF', 'SUPERUSER') and not is_admin:
+                return Response(
+                    {'error': 'Permission denied: Cannot assign administrator privileges.'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+            # Normal users are restricted to standard marketplace roles (BUYER or SELLER)
+            allowed_user_roles = [User.RoleChoices.BUYER, User.RoleChoices.SELLER]
+            if not is_admin and role_val not in allowed_user_roles:
+                return Response(
+                    {'error': f'Invalid role. Choose from: {[r.value for r in allowed_user_roles]}'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
             valid_roles = [r[0] for r in User.RoleChoices.choices]
             if role_val not in valid_roles:
-                return Response({'error': f'Invalid role. Choose from: {valid_roles}'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {'error': f'Invalid role. Choose from: {valid_roles}'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             clean_data['role'] = role_val
 
         serializer = UserSerializer(user, data=clean_data, partial=True)
@@ -268,8 +295,12 @@ class ResetPasswordConfirmView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        token_str = request.data.get('token', '') or request.data.get('resetToken', '')
-        new_password = request.data.get('password', '') or request.data.get('newPassword', '')
+        token_str = (request.data.get('token', '') or request.data.get('resetToken', '')).strip()
+        new_password = (
+            request.data.get('password', '')
+            or request.data.get('new_password', '')
+            or request.data.get('newPassword', '')
+        )
 
         if not token_str or not new_password:
             return Response({'error': 'Token and new password are required.'}, status=status.HTTP_400_BAD_REQUEST)

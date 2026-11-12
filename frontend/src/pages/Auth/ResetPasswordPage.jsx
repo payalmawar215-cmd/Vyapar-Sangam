@@ -27,7 +27,12 @@ export default function ResetPasswordPage() {
 
     setBusy(true);
     try {
-      await authService.resetPassword({ token, new_password: password });
+      await authService.resetPassword({
+        token,
+        password,
+        new_password: password,
+        newPassword: password,
+      });
       navigate("/login", { state: { registeredMessage: "Password updated successfully! Please sign in." } });
     } catch (err) {
       setError(err?.response?.data?.error || "This reset link is invalid or has expired. Please request a new one.");
