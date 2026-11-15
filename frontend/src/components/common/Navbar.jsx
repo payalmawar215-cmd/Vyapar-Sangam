@@ -264,8 +264,8 @@ export default function Navbar() {
                       <Link to="/profile" className="block px-4 py-2.5 font-body text-sm text-foreground hover:bg-secondary/60 transition-colors">Profile</Link>
                       <Link to="/settings" className="block px-4 py-2.5 font-body text-sm text-foreground hover:bg-secondary/60 transition-colors">Settings</Link>
                       <button
-                        onClick={() => logout(false)}
-                        className="w-full text-left px-4 py-2.5 font-body text-sm text-foreground hover:bg-secondary/60 transition-colors flex items-center gap-2"
+                        onClick={() => logout('/login')}
+                        className="w-full text-left px-4 py-2.5 font-body text-sm text-foreground hover:bg-secondary/60 transition-colors flex items-center gap-2 cursor-pointer"
                       >
                         <LogOut size={13} /> Logout
                       </button>
@@ -313,7 +313,7 @@ export default function Navbar() {
               <div className="mt-8 flex flex-col items-start gap-3 font-body text-xs tracking-label uppercase text-muted-foreground">
                 <Link to="/profile" className="hover:text-foreground">Profile</Link>
                 <Link to="/settings" className="hover:text-foreground">Settings</Link>
-                <button onClick={() => logout(false)} className="hover:text-foreground flex items-center gap-1.5">
+                <button onClick={() => logout('/login')} className="hover:text-foreground flex items-center gap-1.5 cursor-pointer">
                   <LogOut size={12} /> Logout
                 </button>
               </div>

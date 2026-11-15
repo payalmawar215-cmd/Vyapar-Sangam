@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 
 const Fallback = () => (
@@ -14,25 +14,35 @@ const Fallback = () => (
 export default function RequireRole({ role, children }) {
   const { user, isAuthenticated, isLoadingAuth, navigateToLogin } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!isLoadingAuth && !isAuthenticated && navigateToLogin) {
-      navigateToLogin(window.location.pathname);
+    if (!isLoadingAuth && !isAuthenticated) {
+      const fullPath = location.pathname + location.search;
+      if (navigateToLogin) {
+        navigateToLogin(fullPath);
+      } else {
+        navigate(`/login?return_to=${encodeURIComponent(fullPath)}`, { replace: true });
+      }
     }
-  }, [isLoadingAuth, isAuthenticated, navigateToLogin]);
+  }, [isLoadingAuth, isAuthenticated, navigateToLogin, navigate, location]);
 
   if (isLoadingAuth || !isAuthenticated) return <Fallback />;
 
-  const appRole = user?.app_role || user?.role?.toLowerCase();
+  const userRoleStr = user?.role ? String(user.role).trim() : '';
+  const appRole = user?.app_role ? String(user.app_role).toLowerCase() : userRoleStr.toLowerCase();
+
   const isPlatformAdmin =
     appRole === "admin" ||
-    user?.role?.toUpperCase() === "ADMIN" ||
+    userRoleStr.toUpperCase() === "ADMIN" ||
     Boolean(user?.is_staff) ||
     Boolean(user?.is_superuser);
-  const allowed = !role || appRole === role.toLowerCase() || isPlatformAdmin;
 
-  if (!appRole) {
-    navigate("/select-role");
+  const targetRoleStr = role ? String(role).toLowerCase() : '';
+  const allowed = !role || appRole === targetRoleStr || isPlatformAdmin;
+
+  if (!appRole && !isPlatformAdmin) {
+    navigate("/select-role", { replace: true });
     return <Fallback />;
   }
 
@@ -42,7 +52,7 @@ export default function RequireRole({ role, children }) {
         <p className="font-body text-xs tracking-label uppercase text-muted-foreground mb-4">Restricted</p>
         <h1 className="font-display text-display-lg font-light text-foreground">This area is for {role}s</h1>
         <p className="font-body text-sm text-muted-foreground mt-4 max-w-md">
-          Your account is registered as a {appRole}. Switch from your profile settings if this is a mistake.
+          Your account is registered as a {appRole || 'user'}. Switch from your profile settings if this is a mistake.
         </p>
       </div>
     );

@@ -1,8 +1,13 @@
 import axios from 'axios';
 
 // Base API client configured for Django REST Framework backend
+const rawBaseURL = import.meta.env.VITE_API_BASE_URL || '/api';
+const cleanBaseURL = rawBaseURL.endsWith('/') && rawBaseURL.length > 1
+  ? rawBaseURL.slice(0, -1)
+  : rawBaseURL;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+  baseURL: cleanBaseURL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -23,6 +28,22 @@ api.interceptors.request.use(
     return config;
   },
   (error) => Promise.reject(error)
+);
+
+// Response interceptor for handling global auth errors (e.g. token expired/revoked)
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      const url = error.config?.url || '';
+      // Only clear credentials if this wasn't an explicit login attempt
+      if (!url.includes('/auth/login/') && !url.includes('/auth/register/')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      }
+    }
+    return Promise.reject(error);
+  }
 );
 
 export default api;

@@ -116,11 +116,19 @@ If you prefer to create each service individually via the Render UI:
    | Key | Value |
    |---|---|
    | `VITE_API_BASE_URL` | `https://vyapar-sangam-backend.onrender.com/api` |
-5. In **Redirects / Rewrites**, ensure SPA fallback is active (Render will automatically detect `dist/_redirects`, but you can also configure it in the UI):
-   - **Type:** `Rewrite`
-   - **Source:** `/*`
-   - **Destination:** `/index.html`
-6. Click **Create Static Site**.
+
+5. **CRITICAL STEP — Configure SPA Redirects/Rewrites (Prevents "Not Found" on Refresh & Logout)**:
+   > Render Static Sites serve static HTML files from `dist`. Unlike web servers, Render does NOT parse `_redirects` files automatically. Without an explicit Rewrite rule, refreshing any deep URL (e.g. `/listings`, `/deals`, `/login`) returns Render's default 404 "Not Found" error.
+   
+   In your Static Site settings in Render Dashboard:
+   - Navigate to the **Redirects / Rewrites** tab on the left sidebar.
+   - Click **Add Rule**.
+   - Set **Type**: `Rewrite`
+   - Set **Source**: `/*`
+   - Set **Destination**: `/index.html`
+   - Click **Save Changes**.
+
+6. Click **Create Static Site** (or trigger a Manual Deploy).
 
 ---
 

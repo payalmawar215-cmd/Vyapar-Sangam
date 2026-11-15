@@ -2,7 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import RequireRole from './components/common/RequireRole';
-import { AuthProvider } from './context/AuthContext';
+import ErrorBoundary from './components/common/ErrorBoundary';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './lib/ToastContext';
 
 // Public pages
@@ -46,66 +47,96 @@ import AdminPending from './pages/Admin/AdminPending';
 import AdminRequests from './pages/Admin/AdminRequests';
 import AdminCategories from './pages/Admin/AdminCategories';
 
+// Role-based smart redirect for /dashboard
+function DashboardRedirect() {
+  const { user } = useAuth();
+  const userRoleStr = user?.role ? String(user.role).trim().toUpperCase() : '';
+  const appRole = user?.app_role ? String(user.app_role).toLowerCase() : userRoleStr.toLowerCase();
+
+  if (appRole === 'admin' || userRoleStr === 'ADMIN' || user?.is_staff || user?.is_superuser) {
+    return <Navigate to="/admin" replace />;
+  }
+  if (appRole === 'seller' || userRoleStr === 'SELLER') {
+    return <Navigate to="/seller" replace />;
+  }
+  if (appRole === 'buyer' || userRoleStr === 'BUYER') {
+    return <Navigate to="/buyer" replace />;
+  }
+  return <Navigate to="/select-role" replace />;
+}
+
 export default function App() {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* ── Standalone Auth Routes ── */}
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
+    <ErrorBoundary>
+      <BrowserRouter>
+        <AuthProvider>
+          <ToastProvider>
+            <Routes>
+              {/* ── Standalone Auth Routes ── */}
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-            {/* ── Application Layout Routes ── */}
-            <Route element={<Layout />}>
-              {/* Public */}
-              <Route path="/" element={<HomePage />} />
-              <Route path="/businesses" element={<ListingsPage />} />
-              <Route path="/business/:id" element={<BusinessDetailPage />} />
-              <Route path="/business/:id/request" element={<BuyRequestForm />} />
-              <Route path="/how-it-works" element={<HowItWorksPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/select-role" element={<RoleSelectPage />} />
+              {/* ── Application Layout Routes ── */}
+              <Route element={<Layout />}>
+                {/* Public */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/businesses" element={<ListingsPage />} />
+                <Route path="/business/:id" element={<BusinessDetailPage />} />
+                <Route path="/business/:id/request" element={<BuyRequestForm />} />
+                <Route path="/how-it-works" element={<HowItWorksPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/select-role" element={<RoleSelectPage />} />
 
-              {/* Buyer */}
-              <Route path="/buyer" element={<RequireRole role="buyer"><BuyerDashboard /></RequireRole>} />
-              <Route path="/favorites" element={<RequireRole role="buyer"><FavoritesPage /></RequireRole>} />
+                {/* Unified /dashboard routing */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <RequireRole>
+                      <DashboardRedirect />
+                    </RequireRole>
+                  }
+                />
 
-              {/* Seller */}
-              <Route path="/seller" element={<RequireRole role="seller"><SellerDashboard /></RequireRole>} />
-              <Route path="/add-business" element={<RequireRole role="seller"><BusinessFormPage /></RequireRole>} />
-              <Route path="/business/:id/edit" element={<RequireRole role="seller"><BusinessFormPage /></RequireRole>} />
-              <Route path="/my-listings" element={<RequireRole role="seller"><MyListingsPage /></RequireRole>} />
+                {/* Buyer */}
+                <Route path="/buyer" element={<RequireRole role="buyer"><BuyerDashboard /></RequireRole>} />
+                <Route path="/favorites" element={<RequireRole role="buyer"><FavoritesPage /></RequireRole>} />
 
-              {/* Shared (Buyer, Seller, Admin) */}
-              <Route path="/requests" element={<RequireRole><InterestRequests /></RequireRole>} />
-              <Route path="/nda" element={<RequireRole><NDAList /></RequireRole>} />
-              <Route path="/nda/:id" element={<RequireRole><NDADetail /></RequireRole>} />
-              <Route path="/deals" element={<RequireRole><DealsPage /></RequireRole>} />
-              <Route path="/meetings" element={<RequireRole><MeetingsPage /></RequireRole>} />
-              <Route path="/profile" element={<RequireRole><ProfilePage /></RequireRole>} />
-              <Route path="/settings" element={<RequireRole><SettingsPage /></RequireRole>} />
+                {/* Seller */}
+                <Route path="/seller" element={<RequireRole role="seller"><SellerDashboard /></RequireRole>} />
+                <Route path="/add-business" element={<RequireRole role="seller"><BusinessFormPage /></RequireRole>} />
+                <Route path="/business/:id/edit" element={<RequireRole role="seller"><BusinessFormPage /></RequireRole>} />
+                <Route path="/my-listings" element={<RequireRole role="seller"><MyListingsPage /></RequireRole>} />
 
-              {/* Admin */}
-              <Route path="/admin" element={<RequireRole role="admin"><AdminDashboard /></RequireRole>} />
-              <Route path="/admin/users" element={<RequireRole role="admin"><AdminUsers /></RequireRole>} />
-              <Route path="/admin/listings" element={<RequireRole role="admin"><AdminListings /></RequireRole>} />
-              <Route path="/admin/pending" element={<RequireRole role="admin"><AdminPending /></RequireRole>} />
-              <Route path="/admin/requests" element={<RequireRole role="admin"><AdminRequests /></RequireRole>} />
-              <Route path="/admin/categories" element={<RequireRole role="admin"><AdminCategories /></RequireRole>} />
+                {/* Shared (Buyer, Seller, Admin) */}
+                <Route path="/requests" element={<RequireRole><InterestRequests /></RequireRole>} />
+                <Route path="/nda" element={<RequireRole><NDAList /></RequireRole>} />
+                <Route path="/nda/:id" element={<RequireRole><NDADetail /></RequireRole>} />
+                <Route path="/deals" element={<RequireRole><DealsPage /></RequireRole>} />
+                <Route path="/meetings" element={<RequireRole><MeetingsPage /></RequireRole>} />
+                <Route path="/profile" element={<RequireRole><ProfilePage /></RequireRole>} />
+                <Route path="/settings" element={<RequireRole><SettingsPage /></RequireRole>} />
 
-              {/* Aliases */}
-              <Route path="/listings" element={<Navigate to="/businesses" replace />} />
-              <Route path="/sell" element={<Navigate to="/add-business" replace />} />
+                {/* Admin */}
+                <Route path="/admin" element={<RequireRole role="admin"><AdminDashboard /></RequireRole>} />
+                <Route path="/admin/users" element={<RequireRole role="admin"><AdminUsers /></RequireRole>} />
+                <Route path="/admin/listings" element={<RequireRole role="admin"><AdminListings /></RequireRole>} />
+                <Route path="/admin/pending" element={<RequireRole role="admin"><AdminPending /></RequireRole>} />
+                <Route path="/admin/requests" element={<RequireRole role="admin"><AdminRequests /></RequireRole>} />
+                <Route path="/admin/categories" element={<RequireRole role="admin"><AdminCategories /></RequireRole>} />
 
-              {/* Catch-all */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </ToastProvider>
-    </AuthProvider>
+                {/* Aliases */}
+                <Route path="/listings" element={<Navigate to="/businesses" replace />} />
+                <Route path="/sell" element={<Navigate to="/add-business" replace />} />
+
+                {/* Catch-all */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Route>
+            </Routes>
+          </ToastProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }

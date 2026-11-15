@@ -19,8 +19,10 @@ export default function LoginPage() {
   const location = useLocation();
   const { loginUser, isAuthenticated, user } = useAuth();
 
-  // Destination redirect path (if user was trying to access a specific page)
-  const redirectFrom = location.state?.from?.pathname;
+  // Destination redirect path (from React state or return_to URL query parameter)
+  const searchParams = new URLSearchParams(location.search);
+  const returnToParam = searchParams.get('return_to');
+  const redirectFrom = location.state?.from?.pathname || returnToParam;
   const initialUsername = location.state?.username || '';
   const initialSuccessMessage = location.state?.registeredMessage || '';
 

@@ -1,38 +1,61 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { authService } from '../services/authService';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
+  let navigate = null;
+  try {
+    navigate = useNavigate();
+  } catch {
+    // Fallback if rendered outside of router
+    navigate = null;
+  }
+
   const [user, setUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem('user');
-      if (!savedUser) return null;
+      if (!savedUser || savedUser === 'null' || savedUser === 'undefined') return null;
       const parsed = JSON.parse(savedUser);
-      // Ensure app_role is available as lowercase
-      parsed.app_role = parsed.app_role || (parsed.role ? parsed.role.toLowerCase() : '');
+      if (!parsed || typeof parsed !== 'object') return null;
+      parsed.app_role = parsed.app_role || (parsed.role ? String(parsed.role).toLowerCase() : '');
       return parsed;
     } catch {
       return null;
     }
   });
-  const [token, setToken] = useState(() => localStorage.getItem('token') || null);
+
+  const [token, setToken] = useState(() => {
+    try {
+      const savedToken = localStorage.getItem('token');
+      return (savedToken && savedToken !== 'null' && savedToken !== 'undefined') ? savedToken : null;
+    } catch {
+      return null;
+    }
+  });
+
   const [loading, setLoading] = useState(true);
 
   const checkUserAuth = useCallback(async () => {
     const savedToken = localStorage.getItem('token');
-    if (!savedToken) {
+    if (!savedToken || savedToken === 'null' || savedToken === 'undefined') {
       setUser(null);
       setToken(null);
       return null;
     }
+
     try {
       const userData = await authService.getCurrentUser();
-      userData.app_role = userData.app_role || (userData.role ? userData.role.toLowerCase() : '');
+      if (!userData || typeof userData !== 'object') {
+        throw new Error('Invalid user payload');
+      }
+      userData.app_role = userData.app_role || (userData.role ? String(userData.role).toLowerCase() : '');
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
       return userData;
-    } catch {
+    } catch (err) {
+      console.warn("Session check failed or expired:", err?.response?.status || err?.message);
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setToken(null);
@@ -43,7 +66,7 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
-    if (savedToken) {
+    if (savedToken && savedToken !== 'null' && savedToken !== 'undefined') {
       checkUserAuth().finally(() => setLoading(false));
     } else {
       setLoading(false);
@@ -55,11 +78,11 @@ export function AuthProvider({ children }) {
    */
   const registerUser = async (userData) => {
     const data = await authService.register(userData);
-    if (data.token) {
+    if (data?.token) {
       localStorage.setItem('token', data.token);
       setToken(data.token);
-      if (data.user) {
-        data.user.app_role = data.user.app_role || (data.user.role ? data.user.role.toLowerCase() : '');
+      if (data.user && typeof data.user === 'object') {
+        data.user.app_role = data.user.app_role || (data.user.role ? String(data.user.role).toLowerCase() : '');
         localStorage.setItem('user', JSON.stringify(data.user));
         setUser(data.user);
       }
@@ -72,11 +95,11 @@ export function AuthProvider({ children }) {
    */
   const loginUser = async (credentials) => {
     const data = await authService.login(credentials);
-    if (data.token) {
+    if (data?.token) {
       localStorage.setItem('token', data.token);
       setToken(data.token);
-      if (data.user) {
-        data.user.app_role = data.user.app_role || (data.user.role ? data.user.role.toLowerCase() : '');
+      if (data.user && typeof data.user === 'object') {
+        data.user.app_role = data.user.app_role || (data.user.role ? String(data.user.role).toLowerCase() : '');
         localStorage.setItem('user', JSON.stringify(data.user));
         setUser(data.user);
       }
@@ -89,9 +112,11 @@ export function AuthProvider({ children }) {
    */
   const updateMe = async (data) => {
     const updated = await authService.updateProfile(data);
-    updated.app_role = updated.app_role || (updated.role ? updated.role.toLowerCase() : '');
-    setUser(updated);
-    localStorage.setItem('user', JSON.stringify(updated));
+    if (updated && typeof updated === 'object') {
+      updated.app_role = updated.app_role || (updated.role ? String(updated.role).toLowerCase() : '');
+      setUser(updated);
+      localStorage.setItem('user', JSON.stringify(updated));
+    }
     return updated;
   };
 
@@ -100,21 +125,48 @@ export function AuthProvider({ children }) {
    */
   const updateRole = async (role) => {
     const updated = await authService.updateRole(role);
-    updated.app_role = updated.app_role || (updated.role ? updated.role.toLowerCase() : '');
-    setUser(updated);
-    localStorage.setItem('user', JSON.stringify(updated));
+    if (updated && typeof updated === 'object') {
+      updated.app_role = updated.app_role || (updated.role ? String(updated.role).toLowerCase() : '');
+      setUser(updated);
+      localStorage.setItem('user', JSON.stringify(updated));
+    }
     return updated;
   };
 
-  const logout = async () => {
-    await authService.logout();
-    setToken(null);
-    setUser(null);
+  /**
+   * Logout user and cleanly redirect to specified route (default /login)
+   */
+  const logout = async (redirectTo = '/login') => {
+    try {
+      await authService.logout();
+    } catch (err) {
+      console.warn("Logout request failed:", err);
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setToken(null);
+      setUser(null);
+      if (redirectTo) {
+        if (navigate) {
+          navigate(redirectTo, { replace: true });
+        } else {
+          window.location.href = redirectTo;
+        }
+      }
+    }
   };
 
-  const navigateToLogin = (returnUrl = '/') => {
-    window.location.href = `/login?return_to=${encodeURIComponent(returnUrl)}`;
-  };
+  /**
+   * Safe navigation to login with return_to preservation
+   */
+  const navigateToLogin = useCallback((returnUrl = '/') => {
+    const targetUrl = `/login?return_to=${encodeURIComponent(returnUrl)}`;
+    if (navigate) {
+      navigate(targetUrl, { replace: true });
+    } else {
+      window.location.href = targetUrl;
+    }
+  }, [navigate]);
 
   return (
     <AuthContext.Provider
